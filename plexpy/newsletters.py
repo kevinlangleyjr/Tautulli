@@ -654,6 +654,8 @@ class RecentlyAdded(Newsletter):
     NAME = 'Recently Added'
     _DEFAULT_CONFIG = Newsletter._DEFAULT_CONFIG.copy()
     _DEFAULT_CONFIG['incl_libraries'] = []
+    _DEFAULT_CONFIG['recommended'] = 0
+    _DEFAULT_CONFIG['recommended_playlist'] = []
     _DEFAULT_SUBJECT = 'Recently Added to {server_name}! ({end_date})'
     _DEFAULT_BODY = 'View the newsletter here: {newsletter_url}'
     _DEFAULT_MESSAGE = ''
@@ -900,13 +902,29 @@ class RecentlyAdded(Newsletter):
         config_options = self._return_config_options()
 
         additional_config = [
-            {'label': 'Included Libraries',
-             'value': self.config['incl_libraries'],
-             'description': 'Select the libraries to include in the newsletter.',
-             'name': 'newsletter_config_incl_libraries',
-             'input_type': 'selectize',
-             'select_options': self._get_sections_options()
-             }
+            {
+                'label': 'Included Libraries',
+                'value': self.config['incl_libraries'],
+                'description': 'Select the libraries to include in the newsletter.',
+                'name': 'newsletter_config_incl_libraries',
+                'input_type': 'selectize',
+                'select_options': self._get_sections_options()
+            },
+            {
+                'label': 'Include Recommended',
+                'value': self.config['recommended'],
+                'description': 'Enable to send the contents of a specific playlist as Recommended items in the newsletter.',
+                'name': 'newsletter_config_recommended',
+                'input_type': 'checkbox'
+            },
+            {
+                'label': 'Recommended Playlist',
+                'value': self.config['recommended_playlist'],
+                'description': 'Select the playlist that will be used to generate the "Recommended" section of the newsletter.',
+                'name': 'newsletter_config_recommended_playlist',
+                'input_type': 'select',
+                'select_options': {'': '', 'recommended': 'Recommended'}
+            }
         ]
 
         return additional_config + config_options

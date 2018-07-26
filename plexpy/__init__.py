@@ -40,6 +40,7 @@ import common
 import database
 import datafactory
 import libraries
+import playlists
 import logger
 import mobile_app
 import newsletters
@@ -301,6 +302,7 @@ def initialize(config_file):
         # Refresh the libraries list on startup
         if CONFIG.PMS_IP and CONFIG.PMS_TOKEN and CONFIG.REFRESH_LIBRARIES_ON_STARTUP:
             libraries.refresh_libraries()
+            playlists.refresh_playlists()
 
         # Store the original umask
         UMASK = os.umask(0)
@@ -611,6 +613,14 @@ def dbcheck():
         'thumb TEXT, custom_thumb_url TEXT, art TEXT, count INTEGER, parent_count INTEGER, child_count INTEGER, '
         'do_notify INTEGER DEFAULT 1, do_notify_created INTEGER DEFAULT 1, keep_history INTEGER DEFAULT 1, '
         'deleted_section INTEGER DEFAULT 0, UNIQUE(server_id, section_id))'
+    )
+
+    # playlists table :: This table keeps record of the server admin's playlists
+    c_db.execute(
+        'CREATE TABLE IF NOT EXISTS playlists (id INTEGER PRIMARY KEY AUTOINCREMENT, '
+        'server_id TEXT, playlist_id INTEGER, playlist_name TEXT, '
+        'thumb TEXT, custom_thumb_url TEXT, art TEXT, '
+        'UNIQUE(server_id, playlist_id))'
     )
 
     # user_login table :: This table keeps record of the Tautulli guest logins

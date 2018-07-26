@@ -313,6 +313,21 @@ class PmsConnect(object):
 
         return request
 
+    def get_playlists_list(self, output_format=''):
+        """
+        Return list of playlists on server.
+
+        Optional parameters:    output_format { dict, json }
+
+        Output: array
+        """
+        uri = '/playlists?type=15'
+        request = self.request_handler.make_request(uri=uri,
+                                                    request_type='GET',
+                                                    output_format=output_format)
+
+        return request
+
     def get_sync_item(self, sync_id='', output_format=''):
         """
         Return sync item details.
